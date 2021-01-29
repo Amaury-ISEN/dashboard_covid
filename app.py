@@ -23,6 +23,7 @@ print(df)
 df = df.dropna()
 group_jour = df.groupby("jour")
 
+# Prendre les totaux de décès et de retours à domicile par sexe (homme, femme & total) :
 donnees = []
 
 hommes = []
@@ -37,10 +38,19 @@ total = []
 total.append(group_jour.apply(lambda x:x[x["sexe"]==0]["retour au domicile"].sum()).tail(1).values[0])
 total.append(group_jour.apply(lambda x:x[x["sexe"]==0]["décès"].sum()).tail(1).values[0])
 
+# Prendre le nombre de décès maximum sur un aggrégat par le département.
+# Dit autrement : récupérer le nombre de décès total par département à la fin de la période considérée.
+group_dpt = df.groupby("département")
+dc_dpt = []
+dc_dpt.append(group_dpt.apply(lambda x:x[x["sexe"]==0]["décès"].max()).values)
+dc_dpt = dc_dpt[0]
+dc_dpt = list(dc_dpt)
 
 donnees.append(total)
 donnees.append(hommes)
 donnees.append(femmes)
+
+donnees.append(dc_dpt)
 
 print(donnees)
 @app.route("/data", methods=["GET"])
