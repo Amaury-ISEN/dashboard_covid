@@ -46,13 +46,31 @@ dc_dpt.append(group_dpt.apply(lambda x:x[x["sexe"]==0]["décès"].max()).values)
 dc_dpt = dc_dpt[0]
 dc_dpt = list(dc_dpt)
 
+# Groupage par jours pour prendre l'évolution des décès au fil des jours :
+group_jrs = df.groupby("jour")
+group_jrs = group_jrs.apply(lambda x:x[x["sexe"]==0]["décès"].sum())
+group_jrs = group_jrs.reset_index()
+liste_deces = group_jrs[0].to_list()
+liste_deces2 =[]
+# Décès du jour précédent, initialisés à 0 pour le premier jour :
+prec_dc = 0
+for i in liste_deces:
+    # On ajoute le nombre de décès du jour considéré moins celui du jour précédant (pour contrer l'effet cumulatif)
+    liste_deces2.append(i-prec_dc)
+    # Le nb de décès du jour précédent est chargé pour le prochain tour de boucle
+    prec_dc = i
+liste_deces2
+
+# Chart diagramme barres :
 donnees.append(total)
 donnees.append(hommes)
 donnees.append(femmes)
-
+# Chart carte France :
 donnees.append(dc_dpt)
+# Chart évolution des décès :
+donnees.append(liste_deces2)
 
-print(donnees)
-@app.route("/data", methods=["GET"])
+
+@app.route("/data")
 def data():
     return render_template("data.html", donnees = donnees)

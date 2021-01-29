@@ -3,7 +3,7 @@ Highcharts.chart('chart1', {
     type: 'bar'
   },
   title: {
-    text: 'Retour au domicile et décès du 18/03/2020 au 21/01/2021'
+    text: 'Retour au domicile et nombre de décès total du 18/03/2020 au 21/01/2021'
   },
   subtitle: {
     text: 'Source: <a href="https://www.insee.fr/fr/statistiques?debut=0&theme=0">insee.fr</a>'
@@ -39,7 +39,7 @@ Highcharts.chart('chart1', {
     align: 'right',
     verticalAlign: 'top',
     x: -20,
-    y: 150,
+    y: 180,
     floating: true,
     borderWidth: 1,
     backgroundColor:
